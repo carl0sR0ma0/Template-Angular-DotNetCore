@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Template.Application.ViewModels;
 namespace Template.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
@@ -48,6 +49,12 @@ namespace Template.Controllers
         public IActionResult Delete(string id)
         {
             return Ok(this.userService.Delete(id));
+        }
+
+        [HttpPost("authenticate"), AllowAnonymous]
+        public IActionResult Authenticate(UserAuthenticateRequestViewModel userViewModel)
+        {
+            return Ok(this.userService.Authenticate(userViewModel));
         }
     }
 }
