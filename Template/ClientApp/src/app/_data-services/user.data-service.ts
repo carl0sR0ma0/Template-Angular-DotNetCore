@@ -10,4 +10,21 @@ export class UserDataService {
   get() {
     return this.http.get(this.module);
   }
+
+  post(data) {
+    return this.http.post(this.module, data);
+  }
+
+  put(data) {
+    return this.http.put(this.module, data);
+  }
+
+  delete(userId) {
+    return this.http.delete(this.module + '/' + userId);
+  }
+
+  authenticate(data) {
+    return this.http.post(this.module + '/authenticate', data);
+  }
+
 }
