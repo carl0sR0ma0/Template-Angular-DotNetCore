@@ -23,7 +23,7 @@ namespace Template.Controllers
             this.userService = userService;
         }
 
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public IActionResult Get()
         {
             return Ok(this.userService.Get());

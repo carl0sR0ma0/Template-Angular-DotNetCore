@@ -1,1 +1,18 @@
-<p>Users</p>
+<p>Users ({{users?.length}})</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td scope="row">{{user.id}}</td>
+      <td scope="row">{{user.name}}</td>
+      <td scope="row">{{user.email}}</td>
+    </tr>
+  </tbody>
+</table>
