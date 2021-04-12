@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using Template.Auth.Models;
 using Template.Domain.Entities;
@@ -28,6 +29,13 @@ namespace Template.Auth.Services
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public static string GetValueFromClaim(IIdentity identity, string field)
+        {
+            var claims = identity as ClaimsIdentity;
+
+            return claims.FindFirst(field).Value;
         }
     }
 }
