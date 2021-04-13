@@ -1,8 +1,8 @@
-<div *ngIf="isAuthenticated">
-  <p>Welcome ({{userLogged?.user?.name}})</p>
-  <button class="btn-primary btn" (click)="showList = !showList">{{ showList ? 'Novo usuário' : 'Lista de usuários' }}</button>
-  <p>Users ({{users?.length}})</p>
-  <div *ngIf="showList">
+<p *ngIf="isAuthenticated">Welcome ({{userLogged?.user?.name}})</p>
+<button class="btn-primary btn" (click)="showList = !showList">{{ showList ? 'Novo usuário' : 'Lista de usuários' }}</button>
+<p *ngIf="isAuthenticated">Users ({{users?.length}})</p>
+<div *ngIf="showList">
+  <div *ngIf="isAuthenticated">
     <table class="table">
       <thead>
         <tr>
@@ -25,23 +25,27 @@
       </tbody>
     </table>
   </div>
-
-  <div *ngIf="!showList">
-    <form>
-      <div class="form-group">
-        <label for="exampleInputName">Name:</label>
-        <input type="text" class="form-control" id="exampleInputName" placeholder="Name" [(ngModel)]="user.name" name="name">
-      </div>
-      <div class="form-group">
-        <label for="exampleInputEmail">Email:</label>
-        <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email" [(ngModel)]="user.email" name="email">
-      </div>
-      <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
-    </form>
-  </div>
 </div>
 
-<div *ngIf="!isAuthenticated">
+<div *ngIf="!showList">
+  <form>
+    <div class="form-group">
+      <label for="exampleInputName">Name:</label>
+      <input type="text" class="form-control" id="exampleInputName" placeholder="Name" [(ngModel)]="user.name" name="name">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail">Email:</label>
+      <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Email" [(ngModel)]="user.email" name="email">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword">Password:</label>
+      <input type="password" class="form-control" id="exampleInputPassword" placeholder="Password" [(ngModel)]="user.password" name="password">
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="save()">Save</button>
+  </form>
+</div>
+
+<div *ngIf="!isAuthenticated && showList">
   <form>
     <div class="form-group">
       <label for="exampleInputEmail">Email:</label>

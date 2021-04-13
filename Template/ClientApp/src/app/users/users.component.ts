@@ -76,7 +76,7 @@ export class UsersComponent implements OnInit {
   }
 
   delete(user) {
-    this.userDataService.delete(user.id).subscribe(data => {
+    this.userDataService.delete().subscribe(data => {
       if (data) {
         alert('Usuário excluído com sucesso');
         this.get();
@@ -110,5 +110,4 @@ export class UsersComponent implements OnInit {
     this.userLogged = JSON.parse(localStorage.getItem('user_logged'));
     this.isAuthenticated = this.userLogged != null;
   }
-
 }

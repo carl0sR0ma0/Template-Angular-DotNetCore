@@ -11,6 +11,7 @@ namespace Template.Application.ViewModels
         [Required]
         public string Name { get; set; }
         [Required]
-        public string Email { get; set; }    
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 using System.Text;
 using Template.Application.Interfaces;
 using Template.Application.ViewModels;
@@ -55,6 +56,7 @@ namespace Template.Application.Services
             Validator.ValidateObject(userViewModel, new ValidationContext(userViewModel), true);
 
             User _user = mapper.Map<User>(userViewModel);
+            _user.Password = EncryptPassoword(_user.Password);
 
             this.userRepository.Create(_user);
 
@@ -83,6 +85,7 @@ namespace Template.Application.Services
                 throw new Exception("User not found");
 
             _user = mapper.Map<User>(userViewModel);
+            _user.Password = EncryptPassoword(_user.Password);
 
             this.userRepository.Update(_user);
 
@@ -103,14 +106,30 @@ namespace Template.Application.Services
 
         public UserAuthenticateResponseViewModel Authenticate(UserAuthenticateRequestViewModel user)
         {
-            if (string.IsNullOrEmpty(user.Email))
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
                 throw new Exception("Email/Password are required.");
 
-            User _user = this.userRepository.Find(x => !x.IsDeleted && x.Email.ToLower() == user.Email.ToLower());
+            user.Password = EncryptPassoword(user.Password);
+
+            User _user = this.userRepository.Find(x => !x.IsDeleted && x.Email.ToLower() == user.Email.ToLower()
+                                                     && x.Password.ToLower() == user.Password.ToLower());
             if (_user == null)
                 throw new Exception("User not found");
 
             return new UserAuthenticateResponseViewModel(mapper.Map<UserViewModel>(_user), TokenService.GenerateToken(_user));
+        }
+
+        private string EncryptPassoword(string password)
+        {
+            HashAlgorithm sha = new SHA1CryptoServiceProvider();
+
+            byte[] encryptedPassowrd = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var caracter in encryptedPassowrd)
+                stringBuilder.Append(caracter.ToString("X2"));
+
+            return stringBuilder.ToString();
         }
     }
 }
